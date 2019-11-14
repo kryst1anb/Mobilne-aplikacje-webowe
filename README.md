@@ -1,9 +1,10 @@
-# Mobilne-aplikacje-webowe
+# Mobilne-aplikacje-webowe#
 
 1: zad1
   ->nazwa_pliku
   ->napis1
   ->napis2
+  
 2: zad2
   ->nazwa_pliku
   ->liczba
@@ -34,7 +35,7 @@
   ->od
   ->do
 10: zad10
-----------------
+
 
 11: zapiszNapis
   ->nazwa_pliku
