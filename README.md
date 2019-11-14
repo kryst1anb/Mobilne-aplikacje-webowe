@@ -8,7 +8,7 @@ Później zależy od wybranego parametru
 {
     "polecenie":"1",
     "nazwa_pliku":"Floor",
-    "napis1":"Hmm, Yes"
+    "napis1":"Hmm, Yes",
     "napis2":"The Floor Here Is Made Out of Floor "
 }
 ```
