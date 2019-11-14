@@ -1,5 +1,5 @@
 <?php
-	$f = fopen("semafor","w");
+	$f = fopen("semafor","a");
 	flock($f,LOCK_EX);
 	
 	$rawdata = file_get_contents("php://input");
@@ -107,7 +107,7 @@
 				else{
 					$plik = array();
 				}
-				$plik['napis'] = $daneJSON['napis1'].$daneJSON['napis2'];
+				$plik['imie_nazwisko'] = $daneJSON['napis1']." ".$daneJSON['napis2'];
 				file_put_contents("OSOBA/$nazwa_pliku",
 				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
@@ -120,30 +120,61 @@
 			return array('status' => false, 'kod' => 2, 'bo' => 'Brak nazwy pliku');
 		}
 	}
+
 	function zad2( $daneJSON ){
-		
+		if(isset($daneJSON['nazwa_pliku'])){
+			$nazwa_pliku = $daneJSON['nazwa_pliku'];
+			if(isset($daneJSON['liczba'])){
+				if(file_exists("OSOBA/$nazwa_pliku")){
+					$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+					if($plik == null) 
+						$plik = array();
+				}
+				else{
+					$plik = array();
+				}
+				$plik['liczba'] = $daneJSON['liczba'];
+				file_put_contents("OSOBA/$nazwa_pliku",
+				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
+			}
+			else{
+				return array('status' => false, 'kod' => 5, 'bo' => 'Brak podanej liczby');
+			}
+		}
+		else{
+			return array('status' => false, 'kod' => 2, 'bo' => 'Brak nazwy pliku');
+		}
 	}
+
 	function zad3( $daneJSON ){
 		
 	}
+
 	function zad4( $daneJSON ){
 		
 	}
+
 	function zad5( $daneJSON ){
 		
 	}
+
 	function zad6( $daneJSON ){
 		
 	}
+
 	function zad7( $daneJSON ){
 		
 	}
+
 	function zad8( $daneJSON ){
 		
 	}
+
 	function zad9( $daneJSON ){
 		
 	}
+
 	function zad10( $daneJSON ){
 		
 	}
@@ -176,8 +207,8 @@
 
 	function odczytajNapis($daneJSON){
 		$nazwa_pliku = $daneJSON['nazwa_pliku'];
-		if(file_exists("4073e4bf57b9e327a0ff30bc0d34d5bd/$nazwa_pliku")){		
-			$plik = json_decode(file_get_contents("4073e4bf57b9e327a0ff30bc0d34d5bd/$nazwa_pliku"),true);
+		if(file_exists("OSOBA/$nazwa_pliku")){		
+			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
 			$napis = $plik['napis'] ?? ''; // Jeżeli puste/NULL nic nie wypisze
 			return array('status' => true, 'kod' => 201, 'bo' => 'ok', 'dane' => $napis);
 			
