@@ -289,7 +289,7 @@
 				else{
 					$plik = array();
 				}
-				$plik['czas'] = $daneJSON['godzina'].":".$daneJSON['minuta'].":".$daneJSON['sekunda'];
+				$plik['czas'] = "{'GODZINA':'".$daneJSON['godzina']."','MINUTA':'".$daneJSON['minuta']."','SEKUNDA':'".$daneJSON['sekunda']."'}";
 				file_put_contents("OSOBA/$nazwa_pliku",
 				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
@@ -315,7 +315,7 @@
 				else{
 					$plik = array();
 				}
-				$plik['przedzial'] = "OD: "$daneJSON['od']."_ DO:".$daneJSON['do'];
+				$plik['przedzial'] = "{'OD':'".$daneJSON['od']."','DO':'".$daneJSON['do']."'}";
 				file_put_contents("OSOBA/$nazwa_pliku",
 				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
