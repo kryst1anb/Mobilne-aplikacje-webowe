@@ -1,5 +1,8 @@
 # Instrukcja obsługi w JSON
-Jako pierwszy argument podawany jest zawsze parametr tj.
+Jako pierwszy argument podawany jest zawsze case 1-13 tj.
+Później zależy od wybranego parametru
+
+Examples
 ```
 {
     "polecenie":"1",
