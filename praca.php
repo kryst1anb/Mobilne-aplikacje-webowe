@@ -96,7 +96,29 @@
 	fclose($f);
 
 	function zad1( $daneJSON ){
-
+		if(isset($daneJSON['nazwa_pliku'])){
+			$nazwa_pliku = $daneJSON['nazwa_pliku'];
+			if(isset($daneJSON['napis1']) && isset($daneJSON['napis2'])){
+				if(file_exists("OSOBA/$nazwa_pliku")){
+					$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+					if($plik == null) 
+						$plik = array();
+				}
+				else{
+					$plik = array();
+				}
+				$plik['napis'] = $daneJSON['napis1'].$daneJSON['napis2'];
+				file_put_contents("OSOBA/$nazwa_pliku",
+				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
+			}
+			else{
+				return array('status' => false, 'kod' => 5, 'bo' => 'Brak imienia lub nazwiska');
+			}
+		}
+		else{
+			return array('status' => false, 'kod' => 2, 'bo' => 'Brak nazwy pliku');
+		}
 	}
 	function zad2( $daneJSON ){
 		
@@ -138,7 +160,7 @@
 				else{
 					$plik = array();
 				}
-				$plik['napis'] = $daneJSON['napis'];
+				$plik['napis'] = $daneJSON['napis'].$daneJSON['napis2'].$daneJSON['napis3'].$daneJSON['napis4'];
 				file_put_contents("4073e4bf57b9e327a0ff30bc0d34d5bd/$nazwa_pliku",
 				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
