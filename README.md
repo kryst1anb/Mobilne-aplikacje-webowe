@@ -1,5 +1,6 @@
 # Instrukcja obsługi
-Jako pierwszy argument podawany jest zawsze case 1-13 tj.
+Jako pierwszy argument podawany jest zawsze case 1-13.
+
 Później zależy od wybranego parametru
 
 ## Examples
