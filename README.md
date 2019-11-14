@@ -1,16 +1,16 @@
 # Mobilne-aplikacje-webowe#
 
 1: zad1
-  ->nazwa_pliku
-  ->napis1
-  ->napis2
+  >nazwa_pliku
+  >napis1
+  >napis2
   
 2: zad2
-  ->nazwa_pliku
-  ->liczba
+  >nazwa_pliku
+  >liczba
 3: zad3
-  ->nazwa_pliku
-  ->czesc_nazwy
+  >nazwa_pliku
+  >czesc_nazwy
 4: zad4
   ->nazwa_pliku
   ->podpowiedz_wyboru
