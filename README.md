@@ -1,4 +1,4 @@
-# Instrukcja obsługi w JSON
+# Instrukcja obsługi
 Jako pierwszy argument podawany jest zawsze case 1-13 tj.
 Później zależy od wybranego parametru
 
