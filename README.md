@@ -4,7 +4,8 @@ Jako pierwszy argument podawany jest zawsze parametr tj.
 {
     "polecenie":"1",
     "nazwa_pliku":"Floor",
-    "napis":"Hmm, Yes,The Floor Here Is Made Out of Floor "
+    "napis1":"Hmm, Yes"
+    "napis2":"The Floor Here Is Made Out of Floor "
 }
 ```
 1: zad1
