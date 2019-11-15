@@ -8,14 +8,14 @@ Później zależy od wybranego parametru
 {
     "polecenie":"1",
     "nazwa_pliku":"Floor",
-    "napis1":"Hmm, Yes",
-    "napis2":"The Floor Here Is Made Out of Floor "
+    "imie":"XYZ",
+    "nazwisko":"ABC"
 }
 ```
 1: zad1 - zwykłe teksty wprowadzone przez użytkownika, kilka , bez nowych linii
    * nazwa_pliku
-   * napis1
-   * napis2
+   * imie
+   * nazwisko
   
 2: zad2 - liczba naturalna
    * nazwa_pliku
