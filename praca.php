@@ -203,27 +203,15 @@
 	}
 
 	function zad5( $daneJSON ){
-		if(isset($daneJSON['nazwa_pliku'])){
-			$nazwa_pliku = $daneJSON['nazwa_pliku'];
-			if(isset($daneJSON['wzor_nr']) ){
-				if(file_exists("OSOBA/$nazwa_pliku")){
-					$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
-					if($plik == null) 
-						$plik = array();
-				}
-				else{
-					$plik = array();
-				}
-				$plik['wzor_nr'] = $daneJSON['wzor_nr'];
-				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
-				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
-			}
-			else{
-				return array('status' => false, 'kod' => 5, 'bo' => 'Brak podanego wzoru');
-			}
+		$nazwa_pliku = $daneJSON['nazwa_pliku'];
+		if(file_exists("danedof/$nazwa_pliku")){		
+			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+			$napis = $plik['wybor_nr'] ?? ''; // Jeżeli puste/NULL nic nie wypisze
+			return array('status' => true, 'kod' => 201, 'bo' => 'ok', 'dane' => $napis);
+			
 		}
 		else{
-			return array('status' => false, 'kod' => 2, 'bo' => 'Brak nazwy pliku');
+			return array('status' => false, 'kod' => 5, 'bo' => 'Blad wybranego wzoru');
 		}
 	}
 
@@ -239,9 +227,10 @@
 				else{
 					$plik = array();
 				}
-				$plik['KOLOR']['RED'] = $daneJSON['R'];
-                $plik['KOLOR']['GREEN'] = $daneJSON['G'];
-                $plik['KOLOR']['BLUE'] = $daneJSON['B'];
+
+				//$plik['KOLOR']['RED'] = $daneJSON['R'];
+                //$plik['KOLOR']['GREEN'] = $daneJSON['G'];
+                //$plik['KOLOR']['BLUE'] = $daneJSON['B'];
                
                 $plik['KOLOR'] = array(
 					'RED'=>$daneJSON['R'],
@@ -300,9 +289,9 @@
 				}
 				//$plik['czas'] = "{'GODZINA':'".$daneJSON['godzina']."','MINUTA':'".$daneJSON['minuta']."','SEKUNDA':'".$daneJSON['sekunda']."'}";
 
-				$plik['czas']['GODZINA'] = $daneJSON['godzina'];
+				/*$plik['czas']['GODZINA'] = $daneJSON['godzina'];
                 $plik['czas']['MINUTA'] = $daneJSON['minuta'];
-                $plik['czas']['SEKUNDA'] = $daneJSON['sekunda'];
+                $plik['czas']['SEKUNDA'] = $daneJSON['sekunda'];*/
                
                 $plik['czas'] = array(
 					'GODZINA'=>$daneJSON['godzina'],
@@ -337,8 +326,8 @@
 				}
 				//$plik['przedzial'] = "{'OD':'".$daneJSON['od']."','DO':'".$daneJSON['do']."'}";
 
-				$plik['przedzial']['OD'] = $daneJSON['od'];
-                $plik['przedzial']['DO'] = $daneJSON['do'];
+				/*$plik['przedzial']['OD'] = $daneJSON['od'];
+                $plik['przedzial']['DO'] = $daneJSON['do'];*/
                
                 $plik['czas'] = array(
 					'OD'=>$daneJSON['od'],
