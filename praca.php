@@ -163,7 +163,7 @@
 					$plik = array();
 				}
 
-				$plik['liczba'] = $daneJSON['czesc_nazwy'];
+				$plik['czesc_nazwy'] = $daneJSON['czesc_nazwy'];
 
 				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
