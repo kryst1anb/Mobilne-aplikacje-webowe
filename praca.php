@@ -96,30 +96,32 @@
 	fclose($f);
 
 	function zad1( $daneJSON ){
-		if(isset($daneJSON['nazwa_pliku'])){
-			$nazwa_pliku = $daneJSON['nazwa_pliku'];
-			if(isset($daneJSON['napis1']) && isset($daneJSON['napis2'])){
-				if(file_exists("OSOBA/$nazwa_pliku")){
-					$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
-					if($plik == null) 
-						$plik = array();
+        if(isset($daneJSON['nazwa_pliku'])){
+            $nazwa_pliku = $daneJSON['nazwa_pliku'];
+            if(isset($daneJSON['imie']) && isset($daneJSON['nazwisko'])){
+                if(file_exists("OSOBA/$nazwa_pliku")){
+                    $plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+                    if($plik == null)
+                        $plik = array();
+                }
+                else{
+                    $plik = array();
 				}
-				else{
-					$plik = array();
-				}
-				$plik['imie_nazwisko'] = $daneJSON['napis1']." ".$daneJSON['napis2'];
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
-				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
-			}
-			else{
-				return array('status' => false, 'kod' => 5, 'bo' => 'Brak imienia lub nazwiska');
-			}
-		}
-		else{
-			return array('status' => false, 'kod' => 2, 'bo' => 'Brak nazwy pliku');
-		}
-	}
+				
+                $plik['imie'] = $daneJSON['imie'];
+				$plik['nazwisko'] = $daneJSON['nazwisko'];
+				
+                file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));          
+                return array('status' => true, 'kod' => 101, 'bo' => 'ok');
+            }
+            else{
+                return array('status' => false, 'kod' => 5, 'bo' => 'Brak imienia lub nazwiska');
+            }
+        }
+        else{
+            return array('status' => false, 'kod' => 2, 'bo' => 'Brak nazwy pliku');
+        }
+    }
 
 	function zad2( $daneJSON ){
 		if(isset($daneJSON['nazwa_pliku'])){
@@ -133,9 +135,10 @@
 				else{
 					$plik = array();
 				}
+
 				$plik['liczba'] = $daneJSON['liczba'];
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -159,9 +162,10 @@
 				else{
 					$plik = array();
 				}
+
 				$plik['liczba'] = $daneJSON['czesc_nazwy'];
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -186,8 +190,7 @@
 					$plik = array();
 				}
 				$plik['podpowiedz_wyboru'] = $daneJSON['podpowiedz_wyboru'];
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -212,8 +215,7 @@
 					$plik = array();
 				}
 				$plik['wzor_nr'] = $daneJSON['wzor_nr'];
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -237,9 +239,17 @@
 				else{
 					$plik = array();
 				}
-				$plik['KOLOR'] = "{'RED':'".$daneJSON['R']."','GREEN':'".$daneJSON['G']."','BLUE':'".$daneJSON['B']."'}";
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				$plik['KOLOR']['RED'] = $daneJSON['R'];
+                $plik['KOLOR']['GREEN'] = $daneJSON['G'];
+                $plik['KOLOR']['BLUE'] = $daneJSON['B'];
+               
+                $plik['KOLOR'] = array(
+					'RED'=>$daneJSON['R'],
+					'GREEN'=>$daneJSON['G'],
+					'BLUE'=>$daneJSON['B']
+				);
+
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -264,8 +274,7 @@
 					$plik = array();
 				}
 				$plik['data'] = $daneJSON['data'];
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -289,9 +298,20 @@
 				else{
 					$plik = array();
 				}
-				$plik['czas'] = "{'GODZINA':'".$daneJSON['godzina']."','MINUTA':'".$daneJSON['minuta']."','SEKUNDA':'".$daneJSON['sekunda']."'}";
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				//$plik['czas'] = "{'GODZINA':'".$daneJSON['godzina']."','MINUTA':'".$daneJSON['minuta']."','SEKUNDA':'".$daneJSON['sekunda']."'}";
+
+				$plik['czas']['GODZINA'] = $daneJSON['godzina'];
+                $plik['czas']['MINUTA'] = $daneJSON['minuta'];
+                $plik['czas']['SEKUNDA'] = $daneJSON['sekunda'];
+               
+                $plik['czas'] = array(
+					'GODZINA'=>$daneJSON['godzina'],
+					'MINUTA'=>$daneJSON['minuta'],
+					'SEKUNDA'=>$daneJSON['sekunda']
+				);
+
+
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -315,9 +335,17 @@
 				else{
 					$plik = array();
 				}
-				$plik['przedzial'] = "{'OD':'".$daneJSON['od']."','DO':'".$daneJSON['do']."'}";
-				file_put_contents("OSOBA/$nazwa_pliku",
-				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				//$plik['przedzial'] = "{'OD':'".$daneJSON['od']."','DO':'".$daneJSON['do']."'}";
+
+				$plik['przedzial']['OD'] = $daneJSON['od'];
+                $plik['przedzial']['DO'] = $daneJSON['do'];
+               
+                $plik['czas'] = array(
+					'OD'=>$daneJSON['od'],
+					'DO'=>$daneJSON['do']
+				);
+
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
 			else{
@@ -337,8 +365,8 @@
 		if(isset($daneJSON['nazwa_pliku'])){
 			$nazwa_pliku = $daneJSON['nazwa_pliku'];
 			if(isset($daneJSON['napis'])){
-				if(file_exists("4073e4bf57b9e327a0ff30bc0d34d5bd/$nazwa_pliku")){
-					$plik = json_decode(file_get_contents("4073e4bf57b9e327a0ff30bc0d34d5bd/$nazwa_pliku"),true);
+				if(file_exists("OSOBA/$nazwa_pliku")){
+					$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
 					if($plik == null) 
 						$plik = array();
 				}
@@ -346,7 +374,7 @@
 					$plik = array();
 				}
 				$plik['napis'] = $daneJSON['napis'].$daneJSON['napis2'].$daneJSON['napis3'].$daneJSON['napis4'];
-				file_put_contents("4073e4bf57b9e327a0ff30bc0d34d5bd/$nazwa_pliku",
+				file_put_contents("OSOBA/$nazwa_pliku",
 				json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'bo' => 'ok');
 			}
