@@ -176,7 +176,6 @@
 			return array('status' => false, 'kod' => 2, 'wartosc' => 'Brak nazwy pliku');
 		}*/
 
-
 		$nazwa_pliku = $daneJSON['nazwa_pliku'];
 		if(file_exists("OSOBA/$nazwa_pliku")){		
 			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
@@ -190,7 +189,7 @@
 	}
 
 	function zad4( $daneJSON ){
-		if(isset($daneJSON['nazwa_pliku'])){
+		/*if(isset($daneJSON['nazwa_pliku'])){
 			$nazwa_pliku = $daneJSON['nazwa_pliku'];
 			if(isset($daneJSON['podpowiedz_wyboru']) ){
 				if(file_exists("OSOBA/$nazwa_pliku")){
@@ -213,6 +212,17 @@
 		}
 		else{
 			return array('status' => false, 'kod' => 2, 'wartosc' => 'Brak nazwy pliku');
+		}*/
+
+		$nazwa_pliku = $daneJSON['nazwa_pliku'];
+		if(file_exists("OSOBA/$nazwa_pliku")){		
+			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+			$napis = $plik['podpowiedz_wyboru'] ?? ''; // Jeżeli puste/NULL nic nie wypisze
+			return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'dane' => $napis);
+			
+		}
+		else{
+			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak nazyw pliku');
 		}
 	}
 
