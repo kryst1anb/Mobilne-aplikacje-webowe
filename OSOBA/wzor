@@ -1,3 +1,24 @@
 {
-    "wzor_nr": "1"
+    "KOLOR": {
+        "RED": 255,
+        "GREEN": 0,
+        "BLUE": 187
+    },
+    "data": "2019-11-18",
+    "czas": {
+        "OD": {
+            "Rok": 2019,
+            "Miesiac": 11,
+            "Dzien": 18,
+            "Godzina": 12,
+            "Minuta": 25
+        },
+        "DO": {
+            "Rok": 2018,
+            "Miesiac": 10,
+            "Dzien": 17,
+            "Godzina": 11,
+            "Minuta": 24
+        }
+    }
 }
