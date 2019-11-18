@@ -52,7 +52,8 @@ klienta
    * do (Format => YYYY-MM-DDThh:mm)
    
 10: zad10 - wybór wielokrotny z krótkiej listy
-    * nazwa_pliku
+   * nazwa_pliku
+   * $_POST[keywords]
     
 11: zapisz Napis (Examples)
    * nazwa_pliku
