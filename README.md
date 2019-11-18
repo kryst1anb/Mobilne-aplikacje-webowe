@@ -23,7 +23,7 @@ Później zależy od wybranego parametru
    
 3: zad3 - wybór jednego napisu z listy
    * nazwa_pliku
-   * czesc_nazwy
+   * napis_z_listy
    
 4: zad4 - wpisanie czegoś z podpowiedzią (po dwóch, trzech literach) bez przesłania całej listy do
 klienta
@@ -36,28 +36,25 @@ klienta
    
 6: zad6 - wybór koloru
    * nazwa_pliku
-   * R
-   * G
-   * B
+   * kolor (Format RGB HEX => #FF0033)
    
 7: zad7 - wybór daty
    * nazwa_pliku
-   * data
+   * data (Format => YYYY-MM-DD)
    
 8: zad8 - wybór czasu (godzina, minuta, sekunda)
    * nazwa_pliku
-   * godzina
-   * minuta
-   * sekunda
-   
+   * czas (Format => hh:mm:ss)
+  
 9: zad9 - wybór odcinka czasu
    * nazwa_pliku
-   * od
-   * do
+   * od (Format => YYYY-MM-DDThh:mm)
+   * do (Format => YYYY-MM-DDThh:mm)
    
 10: zad10 - wybór wielokrotny z krótkiej listy
-
-
+   * nazwa_pliku
+   * $_POST[keywords]
+    
 11: zapisz Napis (Examples)
    * nazwa_pliku
    * napis
