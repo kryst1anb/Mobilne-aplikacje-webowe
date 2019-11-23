@@ -217,7 +217,7 @@
 		$nazwa_pliku = $daneJSON['nazwa_pliku'];
 		if(file_exists("OSOBA/$nazwa_pliku")){		
 			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
-			$napis = $plik['podpowiedz_wyboru'] ?? ''; // Jeżeli puste/NULL nic nie wypisze
+			$napis = $plik['podpowiedz_wyboru'] ?? '';
 			return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'dane' => $napis);
 			
 		}
@@ -227,15 +227,18 @@
 	}
 
 	function zad5( $daneJSON ){
-		$nazwa_pliku = $daneJSON['nazwa_pliku'];
-		if(file_exists("danedof/$nazwa_pliku")){		
-			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
-			$napis = $plik['wybor_nr'] ?? '';
-			return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'dane' => $napis);
-			
+		$nr_wyboru = $daneJSON['wybor_nr'] ?? ''; //Jeżeli puste/NULL przypisz domyślnie 1
+		if(file_exists("OSOBA/wybor$nr_wyboru")){
+			$plik = json_decode(file_get_contents("danedof/wybor$nr_wyboru"),true);
+			if($plik == null){
+				return array('status' => false, 'kod' => 5, 'wartosc' => 'Zły format w pliku ');
+			}
+			else{		
+				return array('status' => true, 'kod' => 202, 'wartosc' => 'ok', 'dane' => $plik);
+			}
 		}
 		else{
-			return array('status' => false, 'kod' => 5, 'wartosc' => 'Blad wybranego wzoru');
+			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak wyboru');
 		}
 	}
 
@@ -316,9 +319,8 @@
 				}
 
 				//%[^.].%s
-				if(preg_match("/^(0[1-9]|[1][0-9]|2[0-4]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])$/", $daneJSON['czas']){
+				if(preg_match("/^(0[1-9]|[1][0-9]|2[0-4]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])$/", $daneJSON['czas'])){
 					list($H, $M, $S) = sscanf($daneJSON['czas'], "%d:%d:%d");
-
 					$plik['czas'] = array(
 						'GODZINA'=>$H,
 						'MINUTA'=>$M,
