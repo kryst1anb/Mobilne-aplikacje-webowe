@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="D:\xampp\htdocs\json\js\script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <title>Formularz</title>
+</head>
+
+<body onload="xd()">
+    <header>
+        <section>
+            <br>
+            <h1>Formularz osobowy</h1>
+            <br>
+        </section>
+    </header>
+    <main>
+        <div id="page1">
+                Podaj swój Id lub wygeneruj:
+                <input type="text" id="id_localstorage" name="id_localstorage" value="">
+                <button type="button" value="generuj" onclick="przeslij()">Generuj</button>
+                <!--<input type="button" value="Dalej" onclick="dalej()" />-->
+                <script>
+                    function xd()
+                    {
+                        alert("xd");
+                    }
+                    document.write(Date.now())
+                    function przeslij()
+                    {
+                        var aj = new XMLHttpRequest;
+                        aj.open("POST","praca.php")
+                        aj.onreadystatechange = function(){
+                            if (this.readyState == 4 && this.status == 200){
+                                console.log(aj.responseText);
+                        }
+                    
+                        aj.send(JSON.stringify({pole:document.getElementById('id_localstorage').value}))
+                    }
+                    }
+                    </script>
+        </div>
+    </main>
+    <footer>
+        <p>Autor: Krystian Barczak, MS Inf sem. V</p>
+    </footer>
+</body>
+</html>

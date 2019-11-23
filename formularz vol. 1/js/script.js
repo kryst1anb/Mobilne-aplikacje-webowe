@@ -1,3 +1,8 @@
+function xd()
+{
+    alert("XDD");
+}
+
 function page1next()
 {
     

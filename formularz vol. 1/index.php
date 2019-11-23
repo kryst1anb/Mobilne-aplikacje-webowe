@@ -269,7 +269,7 @@
         </div>
     </main>
     <footer>
-        Autor: Aleksander Boronowski, MS Inf sem. V &copy;
+        Autor: Krystian Barczak, MS Inf sem. V
         <br>
     </footer>
 </body>

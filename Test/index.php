@@ -16,6 +16,13 @@
 	</form>
 
 <?php
+		$nazwa_pliku = "xd";
+		if(file_exists($nazwa_pliku))
+			echo $nazwa_pliku;
+		else
+			echo "brak";
+
+
 	
 	$czas = date("h:i:s");
 	$data = "0000-00-00";
