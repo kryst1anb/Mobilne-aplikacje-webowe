@@ -61,6 +61,10 @@
 					case 10: 
 						$wynik = zad10($daneJSON );
 					break;
+
+					case 101:
+						$wynik = zad101($daneJSON);
+					break;
 			/* ********************************************************* */
 					case 11: 
 						$wynik = zapiszNapis( $daneJSON ); 
@@ -177,11 +181,12 @@
 		}*/
 
 		$nazwa_pliku = $daneJSON['nazwa_pliku'];
-		if(file_exists("OSOBA/$nazwa_pliku")){		
-			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
-			$napis = $plik['napis_z_listy'] ?? ''; // Jeżeli puste/NULL nic nie wypisze
-			return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'dane' => $napis);
-			
+		if(file_exists("OSOBA/$nazwa_pliku")){	
+			if(isset($daneJSON['napis_z_listy'])){	
+				$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+				$napis = $plik['napis_z_listy'] ?? ''; // Jeżeli puste/NULL nic nie wypisze
+					return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'dane' => $napis);
+			}
 		}
 		else{
 			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak nazyw pliku');
@@ -217,11 +222,61 @@
 		$nazwa_pliku = $daneJSON['nazwa_pliku'];
 		if(file_exists("OSOBA/$nazwa_pliku")){		
 			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
-			$napis = $plik['podpowiedz_wyboru'] ?? '';
+			$napis = $plik['podpowiedz_wyboru'] ?? '0';
 			return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'dane' => $napis);
 		}
 		else{
 			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak nazyw pliku');
+		}
+	}
+
+	function zad101($daneJSON){
+		if(isset($daneJSON['nazwa_pliku'])){
+			$nazwa_pliku = $daneJSON['nazwa_pliku'];
+			if(isset($daneJSON['wyraz'])){
+				if(file_exists("OSOBA/$nazwa_pliku")){
+					$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+					if($plik == null) 
+						$plik = array();
+				}
+				else{
+					$plik = array();
+				}
+				$panstwa = json_decode(file_get_contents("OSOBA/kraje"),true); //wczytanie wszystkich państw JSON
+				$wyraz = $daneJSON['wyraz']; //przypisanie szukanego ciagu do zmiennej
+				$wynik = '';
+
+				if ($wyraz !== '') {
+				    $wyraz = strtolower($wyraz); //zamiana na małe litery
+				    $dlugosc_wyrazu = strlen($wyraz); // liczenie długości ciągu
+				    foreach($panstwa as $panstwo) { //wczytanie wszystkich państw z JSON w odpowiednim formacie
+				        if (stristr($wyraz, substr($panstwo, 0, $dlugosc_wyrazu))) { 
+							/* 
+							stristr() zwraca wszystko to co jest za stringiem w tym przypadku za $wyraz. 
+							$wyraz jest podane przez użytkownika (pierwszy znak/znaki - /ogolnie string/). 
+							substr() wyswietla okreslona liczbe znaków z ciagu w tym przypadku nazwe kraju od poczatku do konca jego nazwy
+							*/
+				            if ($wynik === '') {
+				                $wynik = $panstwo; // jeżeli pierwsze państwo to wypisuje bez przecinka
+				            } else {
+				                $wynik .= ','.$panstwo; // dopisuje kolejne pasujące państwo po przecinku
+				            }
+				        }
+				    }
+				}
+			
+				$plik['panstwo']=$wyraz;
+
+
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
+				return $wynik === '' ? 'Brak państwa' : $wynik; // jezeli pusty zwraca brak w innym przypadku zwraca państwa
+			}
+			else{
+				return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak podanego wyrazu');
+			}
+		}
+		else{
+			return array('status' => false, 'kod' => 2, 'wartosc' => 'Brak nazwy pliku do zapisu');
 		}
 	}
 
@@ -459,8 +514,8 @@
 
 	function podajWzory($daneJSON){
 		$nr_wyboru = $daneJSON['nr_wyboru'] ?? 1; //Jeżeli puste/NULL przypisz domyślnie 1
-		if(file_exists("danedof/wybor$nr_wyboru")){
-			$plik = json_decode(file_get_contents("danedof/wybor$nr_wyboru"),true);
+		if(file_exists("danedof/$nr_wyboru")){
+			$plik = json_decode(file_get_contents("danedof/$nr_wyboru"),true);
 			if($plik == null){
 				return array('status' => false, 'kod' => 5, 'wartosc' => 'Zły format w pliku ');
 			}

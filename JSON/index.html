@@ -9,16 +9,30 @@
     <title>Formularz</title>
     <script>
         window.addEventListener('load', function() {
-            console.log("load-ID: " + localStorage.identyfikator);
-            document.getElementById("id").innerHTML = "load-id: " + localStorage.identyfikator;
+            console.log("ID: " + localStorage.identyfikator);
+            if(localStorage.identyfikator != "undefined"){
+                document.getElementById('generowane_id').value=localStorage.identyfikator;
+                document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;
+            }  
+            check();
         }, true);
 
         function czysc() {
             localStorage.clear();
             console.log("***Zmieniono ID***");
-            console.log("czysc-ID: " + localStorage.identyfikator);
-            document.getElementById("id").innerHTML = "czysc-id: " + localStorage.identyfikator;
+            console.log("ID: " + localStorage.identyfikator);
+            document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;
+            
+            document.getElementById('CheckID').style.display = "inline";
+            document.getElementById('button_dalej').disabled = true;
+            document.getElementById('button_dalej').style.display = "none";
+            document.getElementById('WyborWzor').style.display = "none";
+            document.getElementById('WyborKolorData').style.display = "none";
+            document.getElementById('WyborPodpowiedz').style.display = "none";
+
+
             document.getElementById('generowane_id').value = '';
+
         }
 
         function check() {
@@ -30,7 +44,7 @@
                 console.log("ID: " + identyfikator);
             }
 
-            if (wartosc != "" /* && czyIstniejeID() != true*/ ) {
+            if (wartosc != ""  && czyIstniejeID() == true ) {
                 document.getElementById('button_dalej').disabled = false;
                 document.getElementById('button_dalej').style.display = "inline";
                 return true;
@@ -42,100 +56,50 @@
         }
 
         function czyIstniejeID() {
-            if (localStorage.identyfikator !== "undefined") {
+            if (localStorage.identyfikator != "undefined") {
                 var url = "OSOBA/" + document.getElementById('generowane_id').value;
-                var http = new XMLHttpRequest();
-                http.open('HEAD', url, false);
-                http.send();
-                if (http.status == 404)
-                    return false;
-                else
+                var ajax = new XMLHttpRequest();
+                ajax.open('HEAD', url, false);
+                ajax.send();
+                if (ajax.status != 404){
                     return true;
+                }
             } else {
+                document.getElementById('generowane_id').value = '';
                 console.log("brak ID");
+                return false;
             }
         }
 
         function dalej(flaga) {
 
-            console.log("dalej-ID: " + localStorage.identyfikator);
+            console.log("ID: " + localStorage.identyfikator);
             document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;
 
-            var aj = new XMLHttpRequest;
-                aj.onreadystatechange = function() {
+           /* var ajax = new XMLHttpRequest;
+            ajax.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("demo").innerHTML = aj.responseText;
-                        console.log(aj.responseText);
+                        console.log(ajax.responseText);
                     }
                 }
-
+*/
             if (check() == true) {
                 if (flaga == "WyborWzor") {
                     document.getElementById('CheckID').style.display = "none";
                     document.getElementById('WyborWzor').style.display = "inline";
                     document.getElementById('WyborPodpowiedz').style.display = "none";
                     document.getElementById('WyborKolorData').style.display = "none";
-
-                    /**********************pod wzor**********************/
-                    aj.open("POST", "praca.php", true);
-                    console.log("----------------");
-                    aj.send(JSON.stringify({
-                        polecenie: 5,
-                        nazwa_pliku: document.getElementById('generowane_id').value,
-                        wybor_nr: 1
-                    }));
-                    console.log(JSON.stringify({
-                        polecenie: 5,
-                        nazwa_pliku: document.getElementById('generowane_id').value,
-                        wybor_nr: 1
-                    }));
-                    /*********************************************************/
-
                 } else if (flaga == "WyborPodpowiedz") {
                     document.getElementById('WyborWzor').style.display = "none";
                     document.getElementById('WyborKolorData').style.display = "none";
                     document.getElementById('CheckID').style.display = "none";
                     document.getElementById('WyborPodpowiedz').style.display = "inline";
-
-                    /**********************pod podpowiedzi**********************/
-                    aj.open("POST", "praca.php", true);
-                    console.log("----------------");
-                    aj.send(JSON.stringify({
-                        polecenie: 5,
-                        nazwa_pliku: document.getElementById('generowane_id').value,
-                        wybor_nr: 1
-                    }));
-                    console.log(JSON.stringify({
-                        polecenie: 5,
-                        nazwa_pliku: document.getElementById('generowane_id').value,
-                        wybor_nr: 1
-                    }));
-                    /*********************************************************/
-
                 } else if (flaga == "WyborKolorData") {
                     document.getElementById('WyborPodpowiedz').style.display = "none";
                     document.getElementById('WyborWzor').style.display = "none";
                     document.getElementById('CheckID').style.display = "none";
                     document.getElementById('WyborKolorData').style.display = "inline";
-
-                    /**********************POD kolor i date**********************/
-                    aj.open("POST", "praca.php", true);
-                    console.log("----------------");
-                    aj.send(JSON.stringify({
-                        polecenie: 5,
-                        nazwa_pliku: document.getElementById('generowane_id').value,
-                        wybor_nr: 1
-                    }));
-                    console.log(JSON.stringify({
-                        polecenie: 5,
-                        nazwa_pliku: document.getElementById('generowane_id').value,
-                        wybor_nr: 1
-                    }));
-                    /*********************************************************/
                 }
-
-
-
             } else {
                 alert("Nie podano wartości");
             }
@@ -154,16 +118,24 @@
             check();
         }
 
-        function czyIstnieje() {
-            for (j = 0; j < text.length; j++) {
-                z = ""
-
-                for (i = 0; i < fraza.length; i++) {
-                    z += text.charAt(j + i);
+        function showHint(str) {
+            if (str.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            } else {
+                var ajax = new XMLHttpRequest();
+                ajax.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("txtHint").innerHTML = this.responseText;
+                    localStorage.kraj = str;
                 }
-
-                if (z == fraza)
-                    return true;
+            };
+            ajax.open("POST", "praca.php", true);
+            ajax.send(JSON.stringify({
+                        polecenie: 101,
+                        nazwa_pliku: document.getElementById('generowane_id').value,
+                        wyraz: str
+                    }));
             }
         }
     </script>
@@ -177,7 +149,7 @@
     </header>
     <main>
 
-        <div id="CheckID">
+        <div id="CheckID" style="display: inline;">
             Podaj swój Id lub go wygeneruj:
             <input type="text" id="generowane_id" name="generowane_id" onchange="check()" />
             <button type="button" value="generuj" onclick="generuj()">Generuj</button>
@@ -188,36 +160,33 @@
         <div id="WyborWzor" style="display:none;">
             Wybierz wzór:
             <br>
-            <input type="radio" id="wzor1" name="contact" value="\pi*\sqrt{\sin{2\pi}}" />
+            <input type="radio" id="wzor1" name="1" value="1" />
             <label for="wzor1">
                 <script type="math/tex; mode=display" id="MathJax-Element-1">\pi*\sqrt{\sin{2\pi}} </script>
             </label>
             <br>
-            <input type="radio" id="wzor2" name="contact" value="\sum\limits_{i=1}^n a_{i}" />
+            <input type="radio" id="wzor2" name="2" value="2" />
             <label for="wzor2">
                 <script type="math/tex; mode=display" id="MathJax-Element-1">\sum\limits_{i=1}^n a_{i} </script>
             </label>
             <br>
-            <input type="radio" id="wzor3" name="contact" value="a^a^a" />
+            <input type="radio" id="wzor3" name="3" value="3" />
             <label for="wzor3">
                 <script type="math/tex; mode=display" id="MathJax-Element-1">a^{a^{b}}</script>
             </label>
             <br>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborPodpowiedz')">DALEJ</button>
-            <p id="demo1"></p>
         </div>
 
         <div id="WyborPodpowiedz" style="display:none;">
             Wybierz państwo:
-            <input list="panstwa" id="panstwo" name="panstwo" onchange="check()" />
-            <datalist id="panstwa">
-                <option>1</option>
-                <option>2</option>
-            </datalist>
+            <input type="text" id="panstwo" name="panstwo" onkeyup="showHint(this.value)" onchange="check()" />
+            <br>
+            <br>
+            Suggestions:<b><span id="txtHint"></span></b> 
             <br>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborWzor')">POWROT</button>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborKolorData')">DALEJ</button>
-            <p id="demo2"></p>
         </div>
 
         <div id="WyborKolorData" style="display:none;">
@@ -228,7 +197,6 @@
             <br>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborPodpowiedz')">POWROT</button>
             <button id="button_dalej" type="button" value="Koniec" onclick="dalej('Koniec')">KONIEC</button>
-            <p id="demo3"></p>
         </div>
     </main>
     <footer>
