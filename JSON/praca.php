@@ -219,7 +219,6 @@
 			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
 			$napis = $plik['podpowiedz_wyboru'] ?? '';
 			return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'dane' => $napis);
-			
 		}
 		else{
 			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak nazyw pliku');
