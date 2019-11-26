@@ -299,29 +299,16 @@
 
 				$wzory = json_decode(file_get_contents("OSOBA/wzory"),true); //wczytanie wszystkich wzorow JSON
 				$numer_wzoru = $daneJSON['wzor']; //przypisanie numeru wzoru do zmiennej
-				$wybrany = '';
 
-				print_r("NR WZORU:");
-				print_r($numer_wzoru);
-
+				$plik = array();
 
 				if($numer_wzoru !== ''){
-	
-					print_r("WZOR:");
-					print_r($wzory);
-					$wybrany = $wzory[(int)$numer_wzoru-1]; // wybranie id wzoru (-1) gdyż numerowania od 1
-					print_r("Wybrany wzor:");
-					print_r($wybrany);
-					
+					$plik['wybrany_wzor'] = $wzory[$numer_wzoru]; // wybranie id wzoru (-1) gdyż numerowania od 1
+					$wybrany = $plik['wybrany_wzor'];
 				}
-				
-				$plik['wybrany_wzor'] = $wybrany;
-
-				print_r("plik Wybrany wzor");
-				print_r($plik['wybrany_wzor']);
 
 				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));
-				return $wybrany === '' ? 'Brak wzoru' : $wybrany; // jezeli pusty zwraca brak w innym przypadku zwraca państwa			
+				return $wybrany === '' ? 'Brak wzoru' : $wybrany; // jezeli pusty zwraca brak w innym przypadku zwraca państwa
 			}
 			else{
 				return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak podanego wyrazu');

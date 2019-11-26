@@ -78,7 +78,7 @@
             console.log("dalej-ID: " + localStorage.identyfikator);
             document.getElementById("id").innerHTML = "dalej-id: " + localStorage.identyfikator;
 
-            var ajax = new XMLHttpRequest;
+            var ajax = new XMLHttpRequest();
             ajax.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         console.log(ajax.responseText);
@@ -147,51 +147,66 @@
         function WzorIsCheck()
 		{
 			var rate_value;
-			if (document.getElementById('wzor1').checked) {
- 				rate_value = document.getElementById('wzor1').value;
-				//console.log(rate_value);
-
-                send(rate_value)
-            }
-			if (document.getElementById('wzor2').checked) {
- 				rate_value = document.getElementById('wzor2').value;
-				//console.log(rate_value);
-
-                send(rate_value)
-
-            }		
-			if (document.getElementById('wzor3').checked) {
- 				rate_value = document.getElementById('wzor3').value;
-				console.log(rate_value);
-
-                //send(rate_value)
-            }
-            return rate_value;
-			}
-
-            function send(value){
+			if (document.getElementById('wzor0').checked) {
+ 				rate_value = document.getElementById('wzor0').value;
+                console.log(rate_value);
 
                 var ajax = new XMLHttpRequest();
                 ajax.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("demo1").innerHTML = this.responseText;
-                    console.log(this.responseText);
-                    localStorage.wzor = value;
-                }
-            };
-            ajax.open("POST", "praca.php", true);
-            ajax.send(JSON.stringify({
-                        polecenie: 102,
-                        nazwa_pliku: document.getElementById('generowane_id').value,
-                        wzor: value
-                    }));
-            console.log(JSON.stringify({
-                polecenie: 102,
-                nazwa_pliku: document.getElementById('generowane_id').value,
-                wzor: value
-            }));
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo1").innerHTML = this.responseText;
+                        console.log(this.responseText);
+                        localStorage.wzor = rate_value;
+                    }
+                };
+                ajax.open("POST", "praca.php", true);
+                ajax.send(JSON.stringify({
+                    polecenie: 102,
+                    nazwa_pliku: document.getElementById('generowane_id').value,
+                    wzor: rate_value
+                }));
             }
 
+			if (document.getElementById('wzor1').checked) {
+ 				rate_value = document.getElementById('wzor1').value;
+                 console.log(rate_value);
+                var ajax = new XMLHttpRequest();
+                ajax.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo1").innerHTML = this.responseText;
+                        console.log(this.responseText);
+                        localStorage.wzor = rate_value;
+                    }
+                };
+                ajax.open("POST", "praca.php", true);
+                ajax.send(JSON.stringify({
+                    polecenie: 102,
+                    nazwa_pliku: document.getElementById('generowane_id').value,
+                    wzor: rate_value
+                }));
+
+            }		
+			if (document.getElementById('wzor2').checked) {
+ 				rate_value = document.getElementById('wzor2').value;
+				console.log(rate_value);
+
+
+                var ajax = new XMLHttpRequest();
+                ajax.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo1").innerHTML = this.responseText;
+                        console.log(this.responseText);
+                        localStorage.wzor = rate_value;
+                    }
+                };
+                ajax.open("POST", "praca.php", true);
+                ajax.send(JSON.stringify({
+                    polecenie: 102,
+                    nazwa_pliku: document.getElementById('generowane_id').value,
+                    wzor: rate_value
+                }));
+            }
+		}
     </script>
 </head>
 
@@ -213,18 +228,18 @@
         <div id="WyborWzor" style="display:none;">
             Wybierz wzór:
             <br>
+            <input type="radio" id="wzor0" name="wzor" value="0" />
+            <label for="wzor0">
+                <script type="math/tex; mode=display" id="MathJax-Element-1">a^{a^{b^{c}}} </script>
+            </label>
+            <br>
             <input type="radio" id="wzor1" name="wzor" value="1" />
             <label for="wzor1">
-                <script type="math/tex; mode=display" id="MathJax-Element-1">a^{a^{b^{c}}} </script>
+                <script type="math/tex; mode=display" id="MathJax-Element-1">a^{a}</script>
             </label>
             <br>
             <input type="radio" id="wzor2" name="wzor" value="2" />
             <label for="wzor2">
-                <script type="math/tex; mode=display" id="MathJax-Element-1">a^{a}</script>
-            </label>
-            <br>
-            <input type="radio" id="wzor3" name="wzor" value="3" />
-            <label for="wzor3">
                 <script type="math/tex; mode=display" id="MathJax-Element-1">a^{a^{b}}</script>
             </label>
             <br>
