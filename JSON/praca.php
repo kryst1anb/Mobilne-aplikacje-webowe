@@ -62,8 +62,12 @@
 						$wynik = zad10($daneJSON );
 					break;
 
-					case 101:
+					/*case 101:
 						$wynik = zad101($daneJSON);
+					break;*/
+
+					case 102:
+						$wynik = zad102($daneJSON);
 					break;
 			/* ********************************************************* */
 					case 11: 
@@ -193,8 +197,8 @@
 		}
 	}
 
-	function zad4( $daneJSON ){
-		/*if(isset($daneJSON['nazwa_pliku'])){
+	/* function zad4( $daneJSON ){
+		if(isset($daneJSON['nazwa_pliku'])){
 			$nazwa_pliku = $daneJSON['nazwa_pliku'];
 			if(isset($daneJSON['podpowiedz_wyboru']) ){
 				if(file_exists("OSOBA/$nazwa_pliku")){
@@ -217,7 +221,7 @@
 		}
 		else{
 			return array('status' => false, 'kod' => 2, 'wartosc' => 'Brak nazwy pliku');
-		}*/
+		}
 
 		$nazwa_pliku = $daneJSON['nazwa_pliku'];
 		if(file_exists("OSOBA/$nazwa_pliku")){		
@@ -228,9 +232,9 @@
 		else{
 			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak nazyw pliku');
 		}
-	}
+	}*/
 
-	function zad101($daneJSON){
+	function zad4($daneJSON){
 		if(isset($daneJSON['nazwa_pliku'])){
 			$nazwa_pliku = $daneJSON['nazwa_pliku'];
 			if(isset($daneJSON['wyraz'])){
@@ -270,6 +274,54 @@
 
 				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return $wynik === '' ? 'Brak państwa' : $wynik; // jezeli pusty zwraca brak w innym przypadku zwraca państwa
+			}
+			else{
+				return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak podanego wyrazu');
+			}
+		}
+		else{
+			return array('status' => false, 'kod' => 2, 'wartosc' => 'Brak nazwy pliku do zapisu');
+		}
+	}
+
+	function zad102($daneJSON){
+		if(isset($daneJSON['nazwa_pliku'])){
+			$nazwa_pliku = $daneJSON['nazwa_pliku'];
+			if(isset($daneJSON['wzor'])){
+				if(file_exists("OSOBA/$nazwa_pliku")){
+					$plik = file_get_contents("OSOBA/$nazwa_pliku");
+					if($plik == null) 
+						$plik = array();
+				}
+				else{
+					$plik = array();
+				}
+
+				$wzory = json_decode(file_get_contents("OSOBA/wzory"),true); //wczytanie wszystkich wzorow JSON
+				$numer_wzoru = $daneJSON['wzor']; //przypisanie numeru wzoru do zmiennej
+				$wybrany = '';
+
+				print_r("NR WZORU:");
+				print_r($numer_wzoru);
+
+
+				if($numer_wzoru !== ''){
+	
+					print_r("WZOR:");
+					print_r($wzory);
+					$wybrany = $wzory[(int)$numer_wzoru-1]; // wybranie id wzoru (-1) gdyż numerowania od 1
+					print_r("Wybrany wzor:");
+					print_r($wybrany);
+					
+				}
+				
+				$plik['wybrany_wzor'] = $wybrany;
+
+				print_r("plik Wybrany wzor");
+				print_r($plik['wybrany_wzor']);
+
+				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));
+				return $wybrany === '' ? 'Brak wzoru' : $wybrany; // jezeli pusty zwraca brak w innym przypadku zwraca państwa			
 			}
 			else{
 				return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak podanego wyrazu');
