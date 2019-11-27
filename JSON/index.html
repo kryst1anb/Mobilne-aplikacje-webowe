@@ -10,80 +10,104 @@
     <script>
 
         window.addEventListener('load', function() {
-            console.log("ID: " + localStorage.identyfikator);
-            if(localStorage.identyfikator != "undefined"){
-                document.getElementById('generowane_id').value=localStorage.identyfikator;
+            czysc();
+            if(document.getElementById('generowane_id').value != null)
+            {
+                document.getElementById('button_dalej').disabled = false;
+                document.getElementById('button_dalej').style.display = "inline";
+            }
+
+            if(localStorage.identyfikator !== "undefined"){
+                document.getElementById('generowane_id').value = localStorage.identyfikator;
                 document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;
-            }  
-            check();
+            }
+
+            if(localStorage.wzor !== "undefined"){
+                document.getElementById('wzor'+localStorage.wzor).checked=true;
+            } 
+
+            if(localStorage.kraj !== "undefined"){
+                document.getElementById('panstwo').value = localStorage.kraj;
+            } 
+
+            if(localStorage.data !== "undefined"){
+                document.getElementById('data').value = localStorage.data;
+            } 
+
+            if(localStorage.kolor !== "undefined"){
+                document.getElementById('kolor').value = localStorage.kolor;
+            } 
+            
+
         }, true);
 
         function czysc() {
-            localStorage.clear();
-            console.log("***Zmieniono ID***");
-            console.log("ID: " + localStorage.identyfikator);
+
             document.getElementById('generowane_id').value = '';
-            document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;
+            document.getElementById('wzor0').checked = false;
+            document.getElementById('wzor1').checked = false;
+            document.getElementById('wzor2').checked = false;
+            document.getElementById('panstwo').value = '';
+            document.getElementById('data').value = '';
+            document.getElementById('kolor').value = '';
             
             document.getElementById('CheckID').style.display = "inline";
-
             document.getElementById('WyborWzor').style.display = "none";
             document.getElementById('WyborKolorData').style.display = "none";
             document.getElementById('WyborPodpowiedz').style.display = "none";
+            document.getElementById("id").innerHTML = '';
 
-
+            document.getElementById('button_dalej').disabled = true;
+            document.getElementById('button_dalej').style.display = "none"; 
+            
+            window.localStorage.clear();
         }
 
         function check() {
 
-            var identyfikator;
             var wartosc = document.getElementById('generowane_id').value;
-
+            
             if (wartosc != '') {
                 localStorage.identyfikator = wartosc;
-                identyfikator = localStorage.identyfikator;
-                console.log("ID: " + identyfikator);
             }
 
             if (wartosc != ''  && czyIstniejeID() !== "undefined" ) {
-
                 document.getElementById('button_dalej').disabled = false;
                 document.getElementById('button_dalej').style.display = "inline";
                 return true;
             } else {
                 document.getElementById('button_dalej').disabled = true;
-                document.getElementById('button_dalej').style.display = "none";
+                document.getElementById('button_dalej').style.display = "none"; 
                 return false;
             }
         }
 
+
         function czyIstniejeID() {
             if (localStorage.identyfikator !== "undefined") {
+                
                 var id = document.getElementById('generowane_id').value;
                 var url = "OSOBA/" + document.getElementById('generowane_id').value;
                 var http = new XMLHttpRequest();
                 http.open('HEAD', url, false);
                 http.send();
                 if (http.status != 404)
+                {
+                document.getElementById('generowane_id').value = localStorage.identyfikator;
                     return "istnieje";
-                else
+                }else{
+                 document.getElementById('generowane_id').value = localStorage.identyfikator;
                     return "nie istnieje";
+                 }
             } else {
                 return "undefined";
             }
         }
 
+
         function dalej(flaga) {
 
-            console.log("dalej-ID: " + localStorage.identyfikator);
-            document.getElementById("id").innerHTML = "dalej-id: " + localStorage.identyfikator;
-
-            var ajax = new XMLHttpRequest();
-            ajax.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(ajax.responseText);
-                    }
-                }
+            //document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;
 
             if (check() == true) {
                 if (flaga == "WyborWzor") {
@@ -106,107 +130,130 @@
                     document.getElementById('WyborKolorData').style.display = "inline";
                 }
             } else {
-                alert("Nie podano wartości");
+                alert("Brak wartości");
+                document.getElementById('generowane_id').value = '';
+                document.getElementById('id').innerHTML = '';
             }
         }
 
         function generuj() {
-            czysc()
+
             var text = "";
             var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             for (var i = 0; i < 15; i++) {
                 text += possible.charAt(Math.floor(Math.random() * possible.length));
             }
             document.getElementById('generowane_id').value = text;
-            document.getElementById("id").innerHTML = "gen-id: " + text;
+            document.getElementById("id").innerHTML = "id: " + text;
 
             check();
         }
 
-        function showHint(str) {
-            if (str.length == 0) {
-                document.getElementById("txtHint").innerHTML = "";
+        function WzorIsCheck()
+		{
+			var rate_value='';
+			if (document.getElementById('wzor0').checked) {
+ 				rate_value = document.getElementById('wzor0').value;
+                console.log(rate_value);
+                wyslijWzor(rate_value);
+            }
+
+			else if (document.getElementById('wzor1').checked) {
+ 				rate_value = document.getElementById('wzor1').value;
+                 console.log(rate_value);
+                 wyslijWzor(rate_value);
+            }	
+
+			else if (document.getElementById('wzor2').checked) {
+ 				rate_value = document.getElementById('wzor2').value;
+                console.log(rate_value);
+                wyslijWzor(rate_value);
+            }
+        }
+
+        function pokazPodpowiedz(string) {
+            if (string.length == 0) {
+                document.getElementById("podpowiedz").innerHTML = "";
                 return;
             } else {
                 var ajax = new XMLHttpRequest();
                 ajax.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("txtHint").innerHTML = this.responseText;
-                    localStorage.kraj = str;
+                    document.getElementById("podpowiedz").innerHTML = this.responseText;
+                    localStorage.kraj = string;
                 }
             };
             ajax.open("POST", "praca.php", true);
             ajax.send(JSON.stringify({
                         polecenie: 4,
                         nazwa_pliku: document.getElementById('generowane_id').value,
-                        wyraz: str
+                        wyraz: string
                     }));
             }
         }
 
-        function WzorIsCheck()
-		{
-			var rate_value;
-			if (document.getElementById('wzor0').checked) {
- 				rate_value = document.getElementById('wzor0').value;
-                console.log(rate_value);
+        function wyslijWzor(wzor)
+        {
+            var ajax = new XMLHttpRequest();
+                ajax.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText);
+                        localStorage.wzor = wzor;
+                    }
+                };
+                
+                ajax.open("POST", "praca.php", true);
+                ajax.send(JSON.stringify({
+                    polecenie: 5,
+                    nazwa_pliku: document.getElementById('generowane_id').value,
+                    wzor: wzor
+                }));
+        }
+
+        function wybranyKolor(){
+            check();
+			if (document.getElementById('kolor').value) {
+ 				var kolor = document.getElementById('kolor').value;
+                console.log(kolor);
 
                 var ajax = new XMLHttpRequest();
                 ajax.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("demo1").innerHTML = this.responseText;
                         console.log(this.responseText);
-                        localStorage.wzor = rate_value;
+                        localStorage.kolor = kolor;
                     }
                 };
+
                 ajax.open("POST", "praca.php", true);
                 ajax.send(JSON.stringify({
-                    polecenie: 102,
+                    polecenie: 6,
                     nazwa_pliku: document.getElementById('generowane_id').value,
-                    wzor: rate_value
+                    kolor: kolor
                 }));
             }
+        }
 
-			if (document.getElementById('wzor1').checked) {
- 				rate_value = document.getElementById('wzor1').value;
-                 console.log(rate_value);
-                var ajax = new XMLHttpRequest();
-                ajax.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("demo1").innerHTML = this.responseText;
-                        console.log(this.responseText);
-                        localStorage.wzor = rate_value;
-                    }
-                };
-                ajax.open("POST", "praca.php", true);
-                ajax.send(JSON.stringify({
-                    polecenie: 102,
-                    nazwa_pliku: document.getElementById('generowane_id').value,
-                    wzor: rate_value
-                }));
-
-            }		
-			if (document.getElementById('wzor2').checked) {
- 				rate_value = document.getElementById('wzor2').value;
-				console.log(rate_value);
-
+        function wybranaData(){
+            check();
+			if (document.getElementById('data').value) {
+ 				var data = document.getElementById('data').value;
+                console.log(data);
 
                 var ajax = new XMLHttpRequest();
                 ajax.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("demo1").innerHTML = this.responseText;
                         console.log(this.responseText);
-                        localStorage.wzor = rate_value;
+                        localStorage.data = data;
                     }
                 };
                 ajax.open("POST", "praca.php", true);
                 ajax.send(JSON.stringify({
-                    polecenie: 102,
+                    polecenie: 7,
                     nazwa_pliku: document.getElementById('generowane_id').value,
-                    wzor: rate_value
+                    data: data
                 }));
             }
-		}
+        }
     </script>
 </head>
 
@@ -220,7 +267,7 @@
 
         <div id="CheckID" style="display: inline;">
             Podaj swój Id lub go wygeneruj:
-            <input type="text" id="generowane_id" name="generowane_id" onchange="check()" />
+            <input type="text" id="generowane_id" name="generowane_id" onkeypress="check()" />
             <button type="button" value="generuj" onclick="generuj()">Generuj</button>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborWzor')" style="display: none;" disabled>DALEJ</button>
         </div>
@@ -244,15 +291,14 @@
             </label>
             <br>
             <button id="button_dalej" type="button" value="Dalej" onclick="WzorIsCheck(), dalej('WyborPodpowiedz')">DALEJ</button>
-            <span id="demo1"></span>
         </div>
 
         <div id="WyborPodpowiedz" style="display:none;">
             Wybierz państwo:
-            <input type="text" id="panstwo" name="panstwo" onkeyup="showHint(this.value)" onchange="check()" />
+            <input type="text" id="panstwo" name="panstwo" onkeyup="pokazPodpowiedz(this.value)" onchange="check()" />
             <br>
             <br>
-            Suggestions:<b><span id="txtHint"></span></b> 
+            Suggestions:<b><span id="podpowiedz"></span></b> 
             <br>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborWzor')">POWROT</button>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborKolorData')">DALEJ</button>
@@ -260,17 +306,16 @@
 
         <div id="WyborKolorData" style="display:none;">
             Wybierz date:
-            <input type="date" id="data" name="data" onchange="check()" />
+            <input type="date" id="data" name="data" onchange="wybranaData()" />
             <br> Wybierz kolor:
-            <input type="color" id="kolor" name="kolor" onchange="check()" />
+            <input type="color" id="kolor" name="kolor" onchange="wybranyKolor()" />
             <br>
             <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborPodpowiedz')">POWROT</button>
-            <button id="button_dalej" type="button" value="Koniec" onclick="dalej('Koniec')">KONIEC</button>
+            <button id="button_koniec" type="button" value="CZYŚĆ" onclick="czysc()">KONIEC</button>
         </div>
     </main>
     <footer>
         <p style="color:rgb(255,20,147);" id="id"></p>
-        <button id="button_dalej" type="button" value="CZYŚĆ" onclick="czysc()">CZYŚĆ</button>
         <p>Autor: Krystian Barczak, MS Inf sem. V</p>
     </footer>
 </body>

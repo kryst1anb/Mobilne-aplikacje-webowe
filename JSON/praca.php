@@ -61,14 +61,6 @@
 					case 10: 
 						$wynik = zad10($daneJSON );
 					break;
-
-					/*case 101:
-						$wynik = zad101($daneJSON);
-					break;*/
-
-					case 102:
-						$wynik = zad102($daneJSON);
-					break;
 			/* ********************************************************* */
 					case 11: 
 						$wynik = zapiszNapis( $daneJSON ); 
@@ -246,7 +238,7 @@
 				else{
 					$plik = array();
 				}
-				$panstwa = json_decode(file_get_contents("OSOBA/kraje"),true); //wczytanie wszystkich państw JSON
+				$panstwa = json_decode(file_get_contents("danedof/kraje"),true); //wczytanie wszystkich państw JSON
 				$wyraz = $daneJSON['wyraz']; //przypisanie szukanego ciagu do zmiennej
 				$wynik = '';
 
@@ -284,7 +276,7 @@
 		}
 	}
 
-	function zad102($daneJSON){
+	function zad5($daneJSON){
 		if(isset($daneJSON['nazwa_pliku'])){
 			$nazwa_pliku = $daneJSON['nazwa_pliku'];
 			if(isset($daneJSON['wzor'])){
@@ -297,7 +289,7 @@
 					$plik = array();
 				}
 
-				$wzory = json_decode(file_get_contents("OSOBA/wzory"),true); //wczytanie wszystkich wzorow JSON
+				$wzory = json_decode(file_get_contents("danedof/wzory"),true); //wczytanie wszystkich wzorow JSON
 				$numer_wzoru = $daneJSON['wzor']; //przypisanie numeru wzoru do zmiennej
 
 				$plik = array();
@@ -319,7 +311,7 @@
 		}
 	}
 
-	function zad5( $daneJSON ){
+	/*function zad5( $daneJSON ){
 		$nr_wyboru = $daneJSON['wybor_nr'] ?? ''; //Jeżeli puste/NULL przypisz domyślnie 1
 		if(file_exists("OSOBA/wybor$nr_wyboru")){
 			$plik = json_decode(file_get_contents("danedof/wybor$nr_wyboru"),true);
@@ -333,7 +325,7 @@
 		else{
 			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak wyboru');
 		}
-	}
+	}*/
 
 	function zad6( $daneJSON ){
 		if(isset($daneJSON['nazwa_pliku'])){
@@ -350,10 +342,10 @@
 
 				list($R, $G, $B) = sscanf($daneJSON['kolor'], "#%02x%02x%02x");
                
-                $plik['KOLOR'] = array(
-					'RED' => $R,
-					'GREEN' => $G,
-					'BLUE' => $B
+                $plik['kolor'] = array(
+					'r' => $R,
+					'g' => $G,
+					'b' => $B
 				);
 
 				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
