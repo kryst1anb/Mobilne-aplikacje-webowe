@@ -26,7 +26,6 @@ window.addEventListener('load', function() {
                 document.getElementById("id").innerHTML = "id: ";
                 document.getElementById('button_dalej').disabled = true;
                 document.getElementById('button_dalej').style.display = "none";
-
             }else{
                 document.getElementById('generowane_id').value = localStorage.identyfikator;
                 document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;
@@ -55,6 +54,20 @@ window.addEventListener('load', function() {
 
 }, true);
 
+function activeKoniec(){
+    if(document.getElementById('generowane_id').value != '' && (document.getElementById('wzor0').checked == true || document.getElementById('wzor1').checked == true || document.getElementById('wzor2').checked == true) && document.getElementById('data').value != '' && document.getElementById('kolor').value != '')
+    {
+        document.getElementById('button_koniec').style.display = "inline";
+        document.getElementById('button_koniec').disabled = false;
+    }
+    else
+    {
+        document.getElementById('button_koniec').style.display = "none";
+        document.getElementById('button_koniec').disabled = true; 
+    }
+
+}
+
 function czysc() {
     localStorage.clear();
     document.getElementById('generowane_id').value = '';
@@ -64,7 +77,7 @@ function czysc() {
     document.getElementById('panstwo').value = '';
     document.getElementById('data').value = '';
     document.getElementById('kolor').value = '';
-    
+
     document.getElementById('CheckID').style.display = "inline";
     document.getElementById('WyborWzor').style.display = "none";
     document.getElementById('WyborKolorData').style.display = "none";
@@ -73,8 +86,6 @@ function czysc() {
 
     document.getElementById('button_dalej').disabled = true;
     document.getElementById('button_dalej').style.display = "none"; 
-    
-    
 }
 
 function check() {
@@ -93,11 +104,11 @@ function check() {
     }
 }
 
-
 function czyIstniejeID() {
     if (localStorage.identyfikator !== "undefined") {
-        var id = document.getElementById('generowane_id').value;
+        //var id = document.getElementById('generowane_id').value;
         var url = "OSOBA/" + document.getElementById('generowane_id').value;
+        
         var http = new XMLHttpRequest();
         http.open('HEAD', url, false);
         http.send();
@@ -112,7 +123,6 @@ function czyIstniejeID() {
         return "undefined";
     }
 }
-
 
 function dalej(flaga) {
     //document.getElementById("id").innerHTML = "id: " + localStorage.identyfikator;

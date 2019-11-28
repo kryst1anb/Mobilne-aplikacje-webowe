@@ -28,44 +28,44 @@
 
         <div id="WyborWzor" style="display:none;">
             <h3>Wybierz wzór</h3>
-            <br>
+
             <input type="radio" id="wzor0" name="wzor" value="0" />
             <label for="wzor0">
                 <script type="math/tex; mode=display" id="MathJax-Element-1">a^{a^{b^{c}}} </script>
             </label>
-            <br>
+            
             <input type="radio" id="wzor1" name="wzor" value="1" />
             <label for="wzor1">
                 <script type="math/tex; mode=display" id="MathJax-Element-2">a^{a}</script>
             </label>
-            <br>
+            
             <input type="radio" id="wzor2" name="wzor" value="2" />
             <label for="wzor2">
                 <script type="math/tex; mode=display" id="MathJax-Element-3">a^{a^{b}}</script>
             </label>
-            <br>
+
             <button  type="button" value="Dalej" onclick="WzorIsCheck(), dalej('WyborPodpowiedz')">DALEJ</button>
         </div>
 
         <div id="WyborPodpowiedz" style="display:none;">
-            <h3>Wybierz państwo</h3>
+            <h3>Podaj państwo</h3>
             <input type="text" id="panstwo" name="panstwo" onkeyup="pokazPodpowiedz(this.value)" onchange="check()" />
             <br>
             <br>
             <h3>Podpowiedź:</h3><b><span id="podpowiedz"></span></b>
             <br>
             <button type="button" value="Dalej" onclick="dalej('WyborWzor')">POWROT</button>
-            <button  type="button" value="Dalej" onclick="dalej('WyborKolorData')">DALEJ</button>
+            <button  type="button" value="Dalej" onclick="dalej('WyborKolorData'),activeKoniec()">DALEJ</button>
         </div>
 
         <div id="WyborKolorData" style="display:none;">
             <h3>Wybierz date</h3>
             <br>
-            <input type="date" id="data" name="data" onchange="wybranaData()" />
+            <input type="date" id="data" name="data" onchange="wybranaData(),activeKoniec()" />
             <br> 
             <h3>Wybierz kolor</h3>
             <br>
-            <input type="color" id="kolor" name="kolor" onchange="wybranyKolor()" />
+            <input type="color" id="kolor" name="kolor" onchange="wybranyKolor(),activeKoniec()" />
             <br>
             <button  type="button" value="Dalej" onclick="dalej('WyborPodpowiedz')">POWROT</button>
             <button id="button_koniec" type="button" value="CZYŚĆ" onclick="czysc()">KONIEC</button>
@@ -73,7 +73,7 @@
     </main>
     <footer>
         <p style="color:rgb(255,20,147);" id="id"></p>
-        <p>Autor: Krystian Barczak, MS Inf sem. V</p>
+        <p>Krystian Barczak, MS Inf sem. V</p>
     </footer>
 </body>
 
