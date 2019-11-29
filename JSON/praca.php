@@ -61,6 +61,10 @@
 					case 10: 
 						$wynik = zad10($daneJSON );
 					break;
+
+					case 14:
+						$wynik = odczytajZID($daneJSON);
+					break;
 			/* ********************************************************* */
 					case 11: 
 						$wynik = zapiszNapis( $daneJSON ); 
@@ -238,31 +242,30 @@
 				else{
 					$plik = array();
 				}
+				
 				$panstwa = json_decode(file_get_contents("danedof/kraje"),true); //wczytanie wszystkich państw JSON
 				$wyraz = $daneJSON['wyraz']; //przypisanie szukanego ciagu do zmiennej
 				$wynik = '';
-
+				
 				if ($wyraz !== '') {
 				    $wyraz = strtolower($wyraz); //zamiana na małe litery
 				    $dlugosc_wyrazu = strlen($wyraz); // liczenie długości ciągu
 				    foreach($panstwa as $panstwo) { //wczytanie wszystkich państw z JSON w odpowiednim formacie
-				        if (stristr($wyraz, substr($panstwo, 0, $dlugosc_wyrazu))) { 
-							/* 
-							stristr() zwraca wszystko to co jest za stringiem w tym przypadku za $wyraz. 
+				        if (stristr($wyraz, substr($panstwo, 0, $dlugosc_wyrazu-1))) { 
+							/*stristr() zwraca wszystko to co jest za stringiem w tym przypadku za $wyraz. 
 							$wyraz jest podane przez użytkownika (pierwszy znak/znaki - /ogolnie string/). 
 							substr() wyswietla okreslona liczbe znaków z ciagu w tym przypadku nazwe kraju od poczatku do konca jego nazwy
 							*/
 				            if ($wynik === '') {
-				                $wynik = $panstwo; // jeżeli pierwsze państwo to wypisuje bez przecinka
+								$wynik = '<option value='.$panstwo.'>'; // jeżeli pierwsze państwo to wypisuje bez przecinka
 				            } else {
-				                $wynik .= ','.$panstwo; // dopisuje kolejne pasujące państwo po przecinku
+								$wynik .= '<option value='.$panstwo.'>'; // dopisuje kolejne pasujące państwo po przecinku
 				            }
 				        }
 				    }
 				}
-			
+				//$wynik = substr($wynik,0,strlen($wynik)-1);
 				$plik['panstwo']=$wyraz;
-
 
 				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return $wynik === '' ? 'Brak państwa' : $wynik; // jezeli pusty zwraca brak w innym przypadku zwraca państwa
@@ -295,7 +298,11 @@
 				$plik = array();
 
 				if($numer_wzoru !== ''){
-					$plik['wybrany_wzor'] = $wzory[$numer_wzoru]; // wybranie id wzoru (-1) gdyż numerowania od 1
+					$plik['wybrany_wzor'] = array(
+						'graficznie' => $wzory[$numer_wzoru],
+						'liczbowo' => $numer_wzoru
+					);
+					 // wybranie id wzoru (-1) gdyż numerowania od 1
 					$wybrany = $plik['wybrany_wzor'];
 				}
 
@@ -403,7 +410,6 @@
 					$plik = array();
 				}
 
-				//%[^.].%s
 				if(preg_match("/^(0[1-9]|[1][0-9]|2[0-4]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])$/", $daneJSON['czas'])){
 					list($H, $M, $S) = sscanf($daneJSON['czas'], "%d:%d:%d");
 					$plik['czas'] = array(
@@ -412,8 +418,6 @@
 						'SEKUNDA'=>$S
 					);
 				}
-
-
 
 				file_put_contents("OSOBA/$nazwa_pliku",json_encode($plik, JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES));			
 				return array('status' => true, 'kod' => 101, 'wartosc' => 'ok');
@@ -501,6 +505,27 @@
 				return array('status' => false, 'kod' => 2, 'bo' => 'Brak nazwy pliku');
 			}
 
+	}
+
+	function odczytajZID($daneJSON){
+		$nazwa_pliku = $daneJSON['nazwa_pliku'];
+		if(file_exists("OSOBA/$nazwa_pliku")){		
+			$plik = json_decode(file_get_contents("OSOBA/$nazwa_pliku"),true);
+			
+			$wzor = $plik['wybrany_wzor']['liczbowo']; // Jeżeli puste/NULL nic nie wypisze
+			$panstwo = $plik['panstwo'];
+			$data = $plik['data'];
+			$color = sprintf("#%02x%02x%02x", $plik['kolor']['r'], $plik['kolor']['g'], $plik['kolor']['b']);
+			if($plik == null){
+				return array('status' => false, 'kod' => 5, 'wartosc' => 'Zły format w pliku ');
+			}
+			else{	
+				return array('status' => true, 'kod' => 201, 'wartosc' => 'ok', 'wzor' => $wzor, 'panstwo' =>$panstwo, 'data' =>$data, 'kolor' =>$color);
+			}
+		}
+		else{
+			return array('status' => false, 'kod' => 5, 'wartosc' => 'Brak nazyw pliku');
+		}
 	}
 /* ********************************************************* */
 	function zapiszNapis( $daneJSON ){

@@ -114,6 +114,25 @@ function czyIstniejeID() {
         http.send();
 
         if (http.status != 404){
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    var response = this.responseText;
+                    var dataRequested = JSON.parse(response);
+                    document.getElementById('wzor'+dataRequested.wzor).checked = true;
+                    document.getElementById('kolor').value = dataRequested.kolor;
+                    document.getElementById('panstwo').value = dataRequested.panstwo;
+                    document.getElementById('data').value = dataRequested.data;
+                }
+            };
+            
+            ajax.open("POST", "praca.php", true);
+            ajax.send(JSON.stringify({
+                polecenie: 14,
+                nazwa_pliku: document.getElementById('generowane_id').value,
+            }));
+
             return "istnieje";
         }else{
            return "nie istnieje";
@@ -129,19 +148,16 @@ function dalej(flaga) {
 
     if (check() == true) {
         if (flaga == "WyborWzor") {
-            console.log("*****************Wybor Wzor *****************");
             document.getElementById('CheckID').style.display = "none";
             document.getElementById('WyborWzor').style.display = "inline";
             document.getElementById('WyborPodpowiedz').style.display = "none";
             document.getElementById('WyborKolorData').style.display = "none";
         } else if (flaga == "WyborPodpowiedz") {
-            console.log("*****************WyborPodpowiedz*****************");
             document.getElementById('WyborWzor').style.display = "none";
             document.getElementById('WyborKolorData').style.display = "none";
             document.getElementById('CheckID').style.display = "none";
             document.getElementById('WyborPodpowiedz').style.display = "inline";
         } else if (flaga == "WyborKolorData") {
-            console.log("*****************WyborKolorData*****************");
             document.getElementById('WyborPodpowiedz').style.display = "none";
             document.getElementById('WyborWzor').style.display = "none";
             document.getElementById('CheckID').style.display = "none";
@@ -172,19 +188,16 @@ function WzorIsCheck()
     var rate_value='';
     if (document.getElementById('wzor0').checked) {
          rate_value = document.getElementById('wzor0').value;
-        console.log(rate_value);
         wyslijWzor(rate_value);
     }
 
     else if (document.getElementById('wzor1').checked) {
          rate_value = document.getElementById('wzor1').value;
-         console.log(rate_value);
          wyslijWzor(rate_value);
     }	
 
     else if (document.getElementById('wzor2').checked) {
          rate_value = document.getElementById('wzor2').value;
-        console.log(rate_value);
         wyslijWzor(rate_value);
     }
 }
@@ -215,7 +228,6 @@ function wyslijWzor(wzor)
     var ajax = new XMLHttpRequest();
         ajax.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
                 localStorage.wzor = wzor;
             }
         };
@@ -232,12 +244,10 @@ function wybranyKolor(){
     check();
     if (document.getElementById('kolor').value) {
          var kolor = document.getElementById('kolor').value;
-        console.log(kolor);
 
         var ajax = new XMLHttpRequest();
         ajax.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
                 localStorage.kolor = kolor;
             }
         };
@@ -255,12 +265,10 @@ function wybranaData(){
     check();
     if (document.getElementById('data').value) {
          var data = document.getElementById('data').value;
-        console.log(data);
 
         var ajax = new XMLHttpRequest();
         ajax.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
                 localStorage.data = data;
             }
         };

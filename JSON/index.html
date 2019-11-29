@@ -23,7 +23,7 @@
             <br>
             <input type="text" id="generowane_id" name="generowane_id" onchange="check()" />
             <button type="button" value="generuj" onclick="generuj()">Generuj</button>
-            <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborWzor')" style="display: none;" disabled>DALEJ</button>
+            <button id="button_dalej" type="button" value="Dalej" onclick="dalej('WyborWzor'),czyIstniejeID()" style="display: none;" disabled>DALEJ</button>
         </div>
 
         <div id="WyborWzor" style="display:none;">
@@ -49,11 +49,17 @@
 
         <div id="WyborPodpowiedz" style="display:none;">
             <h3>Podaj państwo</h3>
-            <input type="text" id="panstwo" name="panstwo" onkeyup="pokazPodpowiedz(this.value)" onchange="check()" />
+
+            <label for="panstwo">Podaj państwo:</label>
+            <input type="text" id="panstwo" placeholder="Kliknij lub zacznij pisać" list="podpowiedz" onkeyup="pokazPodpowiedz(this.value)" onchange="check()">
+            <datalist id="podpowiedz">
+            
+            </datalist>
+            <!--<input type="text" id="panstwo" name="panstwo" onkeyup="pokazPodpowiedz(this.value)" onchange="check()" />
             <br>
             <br>
             <h3>Podpowiedź:</h3><b><span id="podpowiedz"></span></b>
-            <br>
+            <br>-->
             <button type="button" value="Dalej" onclick="dalej('WyborWzor')">POWROT</button>
             <button  type="button" value="Dalej" onclick="dalej('WyborKolorData'),activeKoniec()">DALEJ</button>
         </div>
